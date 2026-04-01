@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajay | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #e6e2df; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 40px 80px 40px;
+    }
+    .hero-layout {
+      display: flex; align-items: center; justify-content: center;
+      gap: 72px; width: 100%; max-width: 960px;
+    }
+    .photo-wrap { flex-shrink: 0; position: relative; }
+    .photo-wrap img {
+      width: 280px; height: 340px; object-fit: cover;
+      border-radius: 28px; display: block;
+      border: 4px solid rgba(255,255,255,0.72);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+      position: relative; z-index: 1;
+    }
+    .photo-wrap::after {
+      content: ''; position: absolute;
+      top: 14px; left: 14px; width: 280px; height: 340px;
+      border-radius: 28px; border: 2px solid rgba(0,0,0,0.09); z-index: 0;
+    }
+    .hero-text { display: flex; flex-direction: column; align-items: flex-start; }
+    .greeting-tag {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #9e9894; margin-bottom: 14px; display: block;
+    }
+    .hero-name {
+      font-size: clamp(38px, 5.5vw, 60px); font-weight: 800; color: #1a1714;
+      line-height: 1.08; white-space: nowrap;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+    }
+    .wave-emoji {
+      display: inline-block; font-size: clamp(32px, 4.5vw, 52px); line-height: 1;
+      animation: wave 2.4s ease-in-out infinite; transform-origin: 70% 80%;
+    }
+    @keyframes wave {
+      0%,60%,100% { transform: rotate(0deg); }
+      10%,30%     { transform: rotate(18deg); }
+      20%,40%     { transform: rotate(-8deg); }
+    }
+    .role-row { display: flex; align-items: center; gap: 8px; margin-bottom: 36px; height: 32px; }
+    .role-prefix { font-size: 18px; color: #9e9894; font-weight: 400; white-space: nowrap; }
+    .role-text {
+      font-size: 20px; font-weight: 600; color: #1a1714;
+      border-right: 2.5px solid #1a1714; white-space: nowrap; overflow: hidden;
+      animation: blink 0.75s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { border-color: #1a1714; } 50% { border-color: transparent; } }
+    .hero-cta { display: flex; gap: 12px; }
+    .btn-dark {
+      padding: 13px 30px; background: #1a1714; color: #f5f2ef;
+      border-radius: 999px; font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: opacity 0.18s;
+    }
+    .btn-dark:hover { opacity: 0.80; }
+    .btn-ghost {
+      padding: 13px 30px; background: transparent; color: #1a1714;
+      border-radius: 999px; font-size: 14px; font-weight: 500;
+      text-decoration: none; border: 1.5px solid rgba(0,0,0,0.22); transition: background 0.18s;
+    }
+    .btn-ghost:hover { background: rgba(0,0,0,0.06); }
+
+    /* ─── ABOUT ─── */
+    .about-section { background: #f5f2ef; padding: 100px 40px; }
+    .about-inner { max-width: 900px; margin: 0 auto; }
+    .reveal {
+      opacity: 0; transform: translateY(60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.10s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.50s; }
+    .section-tag { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #9e9894; margin-bottom: 12px; }
+    .section-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; color: #1a1714; line-height: 1.15; margin-bottom: 24px; }
+    .about-bio { font-size: 16px; color: #5a5550; line-height: 1.85; margin-bottom: 40px; max-width: 720px; }
+    .about-bio strong { color: #1a1714; font-weight: 600; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+    .stat-card { background: #fff; border-radius: 16px; padding: 24px 20px; border: 0.5px solid rgba(0,0,0,0.08); }
+    .stat-number { font-size: 32px; font-weight: 800; color: #1a1714; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 13px; color: #9e9894; font-weight: 500; }
+    .skills-title { font-size: 15px; font-weight: 600; color: #1a1714; margin-bottom: 16px; }
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+    .skill-pill { padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; background: #fff; color: #1a1714; border: 0.5px solid rgba(0,0,0,0.12); }
+    .skill-pill.lang      { background: #1a1714; color: #f5f2ef; }
+    .skill-pill.framework { background: #e8f4fd; color: #185fa5; border-color: #b5d4f4; }
+    .skill-pill.db        { background: #eaf3de; color: #3b6d11; border-color: #c0dd97; }
+    .exp-card { background: #fff; border-radius: 20px; padding: 28px; border: 0.5px solid rgba(0,0,0,0.08); display: flex; gap: 20px; align-items: flex-start; }
+    .exp-dot { width: 44px; height: 44px; border-radius: 12px; background: #1a1714; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #f5f2ef; }
+    .exp-dot span { font-size: 20px; }
+    .exp-role    { font-size: 16px; font-weight: 700; color: #1a1714; margin-bottom: 2px; }
+    .exp-company { font-size: 14px; color: #9e9894; margin-bottom: 10px; }
+    .exp-desc    { font-size: 14px; color: #5a5550; line-height: 1.75; }
+
+    /* ─── PROJECTS ─── */
+    .projects-section { background: #e6e2df; padding: 100px 0; }
+    .projects-header { padding: 0 40px; margin-bottom: 56px; }
+    .projects-header .section-tag { margin-bottom: 8px; }
+    .projects-header .section-title { margin-bottom: 0; }
+
+    .proj-category { margin-bottom: 64px; }
+    .cat-label {
+      padding: 0 40px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #9e9894; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .cat-label::after {
+      content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.10); max-width: 200px;
+    }
+
+    /* Scroll track */
+    .scroll-track-wrap {
+    overflow: hidden;
+    position: relative;
+    }
+
+    .scroll-track {
+    display: flex;
+    gap: 20px;
+    padding: 12px 40px 20px;
+    width: max-content;
+    animation: scrollLeft linear infinite;
+    transform: translateX(0); /* ensure start from left */
+    }
+    .scroll-track:hover { animation-play-state: paused; }
+    .scroll-track > * {
+    flex-shrink: 0;
+    }
+    
+    @keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+    }
+    /* Project card */
+    .proj-card {
+      width: 280px; height: 200px; flex-shrink: 0;
+      border-radius: 20px; overflow: hidden;
+      position: relative; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s ease;
+      margin-right: 20px;
+    }
+    .proj-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+    }
+    .proj-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .proj-card:hover img { transform: scale(1.08); }
+
+    /* Overlay always visible at bottom */
+    .proj-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 36px 16px 14px;
+      background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, transparent 100%);
+      transition: padding 0.3s ease;
+    }
+    .proj-card:hover .proj-overlay { padding-top: 48px; }
+
+    .proj-title {
+      font-size: 15px; font-weight: 700; color: #fff;
+      line-height: 1.25; margin-bottom: 4px;
+    }
+    .proj-tag {
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.65);
+      letter-spacing: 0.06em;
+    }
+
+    /* Hover: "View details" pill */
+    .proj-view {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,0.90);
+      color: #1a1714; font-size: 11px; font-weight: 600;
+      padding: 5px 12px; border-radius: 999px;
+      opacity: 0; transform: translateY(-6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      letter-spacing: 0.04em;
+    }
+    .proj-card:hover .proj-view { opacity: 1; transform: translateY(0); }
+
+    /* ─── MODAL ─── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      pointer-events: none;
+      transition: background 0.35s ease;
+    }
+    .modal-backdrop.open { background: rgba(0,0,0,0.55); pointer-events: all; }
+
+    .modal {
+      background: #fff; border-radius: 28px;
+      width: 100%; max-width: 680px;
+      max-height: 88vh; overflow-y: auto;
+      opacity: 0; transform: scale(0.88) translateY(24px);
+      transition: opacity 0.35s cubic-bezier(.22,.68,0,1.2), transform 0.35s cubic-bezier(.22,.68,0,1.2);
+      position: relative;
+    }
+    .modal-backdrop.open .modal { opacity: 1; transform: scale(1) translateY(0); }
+
+    .modal-hero {
+      width: 100%; height: 240px; object-fit: cover;
+      border-radius: 28px 28px 0 0; display: block;
+    }
+
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.45); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #fff;
+      transition: background 0.18s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.70); }
+    .modal-close span { font-size: 20px; }
+
+    .modal-body { padding: 28px 32px 36px; }
+    .modal-cat {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #9e9894; margin-bottom: 8px;
+    }
+    .modal-title { font-size: 26px; font-weight: 800; color: #1a1714; margin-bottom: 12px; }
+    .modal-desc { font-size: 15px; color: #5a5550; line-height: 1.80; margin-bottom: 24px; }
+
+    .modal-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .modal-tech span {
+      padding: 5px 14px; border-radius: 999px; font-size: 12px; font-weight: 500;
+      background: #f0ede8; color: #1a1714;
+    }
+
+    /* Extra images */
+    .modal-images { display: flex; gap: 10px; margin-bottom: 28px; overflow-x: auto; padding-bottom: 4px; }
+    .modal-images img {
+      height: 110px; width: 180px; object-fit: cover;
+      border-radius: 12px; flex-shrink: 0;
+    }
+
+    .modal-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; background: #1a1714; color: #f5f2ef;
+      border-radius: 999px; font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: opacity 0.18s;
+    }
+    .modal-link:hover { opacity: 0.80; }
+    .modal-link span { font-size: 18px; }
+    /* Modal scrollbar styling */
+.modal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.3) transparent;
+}
+
+/* Chrome / Edge / Safari */
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.45);
+}
+
+    /* ─── NAVBAR ─── */
+    .portfolio-nav {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 0.5px solid rgba(0,0,0,0.10); border-radius: 999px;
+      padding: 8px 14px; box-shadow: 0 4px 32px rgba(0,0,0,0.10); z-index: 1000;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; padding: 8px 18px; border-radius: 999px;
+      cursor: pointer; text-decoration: none; color: #5a5550;
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-item span.material-icons-round { font-size: 20px; line-height: 1; }
+    .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .nav-item:hover  { background: rgba(0,0,0,0.06); color: #1a1714; }
+    .nav-item.active { background: #1a1714; color: #f5f2ef; }
+    .nav-divider { width: 1px; height: 28px; background: rgba(0,0,0,0.10); margin: 0 2px; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .hero { padding: 60px 24px 100px; }
+      .hero-layout { flex-direction: column; gap: 36px; }
+      .hero-name { white-space: normal; font-size: 36px; }
+      .photo-wrap img { width: 220px; height: 270px; }
+      .photo-wrap::after { width: 220px; height: 270px; }
+      .hero-text { align-items: center; text-align: center; }
+      .role-row, .hero-cta { justify-content: center; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .proj-card { width: 240px; height: 170px; }
+    }
+    #track-college {
+    animation-direction: reverse;
+    }
+    .company-grid {
+    display: flex;
+    gap: 24px;
+    padding: 12px 40px 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    }
+
+    .company-grid .proj-card {
+    width: 320px;
+    height: 220px;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-section {
+    background: #f5f2ef;
+    padding: 190px 40px;
+    }
+
+    .contact-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    }
+
+    .contact-sub {
+    font-size: 15px;
+    color: #5a5550;
+    margin-bottom: 40px;
+    }
+
+    .contact-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    }
+
+    .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    background: #fff;
+    padding: 20px;
+    border-radius: 18px;
+
+    text-decoration: none;
+    color: #1a1714;
+
+    border: 0.5px solid rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+    }
+
+    .contact-card span {
+    font-size: 26px;
+    background: #1a1714;
+    color: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    }
+
+    .contact-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+    }
+
+    .contact-title {
+    font-size: 13px;
+    color: #9e9894;
+    }
+
+    .contact-value {
+    font-size: 14px;
+    font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-layout">
+      <div class="photo-wrap">
+        <img src="myphoto.png" alt="Ajay">
+      </div>
+      <div class="hero-text">
+        <span class="greeting-tag">Welcome to my portfolio</span>
+        <h1 class="hero-name">Hi, I'm Ajay <span class="wave-emoji">👋</span></h1>
+        <div class="role-row">
+          <span class="role-prefix">I'm a</span>
+          <span class="role-text" id="role-text"></span>
+        </div>
+        <div class="hero-cta">
+          <a href="#about" class="btn-dark">About me</a>
+          <a href="#contact" class="btn-ghost">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <p class="section-tag reveal">About me</p>
+      <h2 class="section-title reveal reveal-delay-1">Full Stack Developer<br>with a passion for building.</h2>
+      <p class="about-bio reveal reveal-delay-2">
+        I'm <strong>Ajay</strong>, a passionate <strong>Full Stack Developer</strong> with hands-on experience
+        in building robust web applications. I have <strong>1 year of industry experience</strong> at
+        <strong>Ignosi</strong>, where I worked with <strong>PHP &amp; CodeIgniter</strong> on
+        <strong>banking systems</strong> and <strong>e-commerce web applications</strong> — delivering
+        secure, scalable solutions in fast-paced environments.
+        <br><br>
+        I'm currently pursuing my <strong>MCA</strong> at <strong>Mar Athanasius College of Engineering</strong>,
+        deepening my expertise across the full software development stack — from backend APIs to interactive frontends.
+      </p>
+      <div class="stats-row reveal reveal-delay-2">
+        <div class="stat-card"><div class="stat-number">1+</div><div class="stat-label">Year of experience</div></div>
+        <div class="stat-card"><div class="stat-number">10+</div><div class="stat-label">Technologies</div></div>
+        <div class="stat-card"><div class="stat-number">2+</div><div class="stat-label">Domains worked in</div></div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <p class="skills-title">Languages</p>
+        <div class="skills-grid">
+          <span class="skill-pill lang">Java</span>
+          <span class="skill-pill lang">Python</span>
+          <span class="skill-pill lang">PHP</span>
+          <span class="skill-pill lang">JavaScript</span>
+        </div>
+        <p class="skills-title">Frameworks &amp; Libraries</p>
+        <div class="skills-grid">
+          <span class="skill-pill framework">CodeIgniter 4 &amp; 5</span>
+          <span class="skill-pill framework">Spring Boot</span>
+          <span class="skill-pill framework">React</span>
+          <span class="skill-pill framework">REST API</span>
+        </div>
+        <p class="skills-title">Databases</p>
+        <div class="skills-grid">
+          <span class="skill-pill db">MySQL</span>
+          <span class="skill-pill db">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-4">
+        <p class="skills-title" style="margin-top:8px;">Experience</p>
+        <div class="exp-card">
+          <div class="exp-dot"><span class="material-icons-round">work</span></div>
+          <div>
+            <p class="exp-role">PHP Developer</p>
+            <p class="exp-company">Ignosi · 1 year · Full-time</p>
+            <p class="exp-desc">Developed and maintained <strong>banking systems</strong> and <strong>e-commerce web applications</strong>
+            using PHP &amp; CodeIgniter. Worked on secure transaction modules, RESTful APIs, and database design
+            with MySQL — collaborating with cross-functional teams to deliver production-ready features on schedule.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ── -->
+  <section class="projects-section" id="projects">
+    <div class="projects-header reveal">
+      <p class="section-tag">My work</p>
+      <h2 class="section-title">Projects</h2>
+    </div>
+
+    <!-- Company Projects -->
+    <div class="proj-category reveal">
+      <p class="cat-label">Company Projects</p>
+      <div class="company-grid" id="track-company">
+      </div>
+    </div>
+
+    <!-- College Projects -->
+    <div class="proj-category reveal reveal-delay-1">
+      <p class="cat-label">College Projects</p>
+      <div class="scroll-track-wrap">
+        <div class="scroll-track" id="track-college"></div>
+      </div>
+    </div>
+
+    <!-- Vibe Coding Projects -->
+    <div class="proj-category reveal reveal-delay-2">
+      <p class="cat-label">Vibe Coding Projects</p>
+      <div class="scroll-track-wrap">
+        <div class="scroll-track" id="track-vibe"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner reveal">
+    <p class="section-tag">Get in touch</p>
+    <h2 class="section-title">Let’s build something together</h2>
+    <p class="contact-sub">
+      I'm open to opportunities, collaborations, or just a friendly chat.
+    </p>
+
+    <div class="contact-cards">
+
+      <!-- Email -->
+     <a href="mailto:ajaykumarks.me@gmail.com?subject=Project%20Inquiry&body=Hi%20Ajay,%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you.%0A%0AThanks," class="contact-card">
+        <span class="material-icons-round">mail</span>
+        <div>
+          <p class="contact-title">Email</p>
+          <p class="contact-value">ajaykumarks.me@gmail.com</p>
+        </div>
+      </a>
+
+      <!-- Phone -->
+      <a href="tel:+91XXXXXXXXXX" class="contact-card">
+        <span class="material-icons-round">call</span>
+        <div>
+          <p class="contact-title">Phone</p>
+          <p class="contact-value">+91 XXXXX XXXXX</p>
+        </div>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/ajay-kumar-ks" target="_blank" class="contact-card">
+        <span class="material-icons-round">code</span>
+        <div>
+          <p class="contact-title">GitHub</p>
+          <p class="contact-value">github.com/ajay-kumar-ks</p>
+        </div>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/in/ajaykumarks" target="_blank" class="contact-card">
+        <span class="material-icons-round">work</span>
+        <div>
+          <p class="contact-title">LinkedIn</p>
+          <p class="contact-value">linkedin.com/in/ajaykumarks</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+  <!-- ── MODAL ── -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">
+        <span class="material-icons-round">close</span>
+      </button>
+      <img class="modal-hero" id="modal-hero-img" src="" alt="">
+      <div class="modal-body">
+        <p class="modal-cat" id="modal-cat"></p>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-tech" id="modal-tech"></div>
+        <div class="modal-images" id="modal-images"></div>
+        <a class="modal-link" id="modal-link" href="#" target="_blank">
+          <span class="material-icons-round">open_in_new</span> View Live Project
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="portfolio-nav">
+    <a class="nav-item active" href="#home"><span class="material-icons-round">home</span><span class="nav-label">Home</span></a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#about"><span class="material-icons-round">person</span><span class="nav-label">About</span></a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#projects"><span class="material-icons-round">work_outline</span><span class="nav-label">Projects</span></a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#contact"><span class="material-icons-round">mail</span><span class="nav-label">Contact</span></a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#chat"><span class="material-icons-round">chat_bubble</span><span class="nav-label">Chat</span></a>
+  </nav>
+
+  <script>
+    /* ── PROJECT DATA ── */
+    const projects = {
+      company: [
+        {
+            id: 'c1',
+            title: 'Banq – Financial Core System',
+            cat: 'Company Project',
+            thumb: 'compProj1.jpg',
+            images: ['compProj1.jpg','compProj1_1.jpg','compProj1_2.jpg','compProj1_3.jpg'],
+            desc: 'A financial core system developed as part of a fintech solution at Ignosi Enterprises. Contributed to both frontend and backend development, implementing secure transaction handling, account management, and scalable architecture for financial operations.',
+            tech: ['MySQL', 'CodeIgniter 3', 'JavaScript', 'Semantic UI'],
+            link: '#'
+        },
+        {
+            id: 'c2',
+            title: 'Zeego – Heavy Vehicle E-commerce Platform',
+            cat: 'Company Project',
+            thumb: 'compProj2.png',
+            images: ['compProj2.png', 'compProj2_1.png', 'compProj2_2.png'],
+            desc: 'A full-stack e-commerce platform focused on heavy vehicles and machinery. Led development across frontend and backend, including product management, order processing, and logistics integration using Ecom Express API.',
+            tech: ['MySQL', 'CodeIgniter 3', 'JavaScript', 'Semantic UI', 'Ecom Express API'],
+            link: '#'
+        }
+        ],
+
+        college: [
+        {
+            id: 'g1',
+            title: 'Notes-Net – Smart Task & Notes Manager',
+            cat: 'College Project',
+            thumb: 'clgProj1.png',
+            images: ['clgProj1.png'],
+            desc: 'An online notepad and task management system designed for daily productivity. Users can store text, images, and manage tasks such as pending and upcoming activities. Accessible across devices with real-time synchronization.',
+            tech: ['Node.js', 'MySQL', 'React', 'Material UI', 'REST API'],
+            link: '#'
+        },
+        {
+            id: 'g2',
+            title: 'SScript – Time-Based Encryption System',
+            cat: 'College Project',
+            thumb: 'clgProj2.png',
+            images: ['clgProj2.png'],
+            desc: 'A Java Spring Boot-based encryption system implementing multi-layered security with three different character sets. The encrypted output dynamically changes every second for the same input, enhancing security against pattern detection.',
+            tech: ['Java', 'Spring Boot'],
+            link: '#'
+        },
+        {
+            id: 'g3',
+            title: 'College Office Management System',
+            cat: 'College Project',
+            thumb: 'clgProj3.png',
+            images: ['clgProj3.png'],
+            desc: 'A web-based management system for handling college operations including student records, teacher data, and fee management. Designed with an intuitive UI for administrative efficiency.',
+            tech: ['CodeIgniter 4', 'MySQL', 'Bootstrap'],
+            link: '#'
+        },
+        {
+            id: 'g4',
+            title: 'Grub – Restaurant Discovery Platform',
+            cat: 'College Project',
+            thumb: 'clgProj4.png',
+            images: ['clgProj4.png'],
+            desc: 'A full-stack platform where restaurant owners can showcase their services, menus, and facilities. Users can explore nearby restaurants, discover trending food spots, and engage with food blogs.',
+            tech: ['React', 'Material UI', 'Spring Boot', 'MySQL'],
+            link: '#'
+        }
+        ],
+
+        vibe: [
+        {
+            id: 'v1',
+            title: 'Couple Fun Page',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj1.png',
+            images: ['vibeProj1.png'],
+            desc: 'A creative and fun webpage designed for couples with interactive elements and playful UI.',
+            tech: ['HTML', 'CSS', 'JavaScript'],
+            link: 'https://whatsinpixel.netlify.app/'
+        },
+        {
+            id: 'v2',
+            title: 'Crush Interaction Page',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj2.png',
+            images: ['vibeProj2.png'],
+            desc: 'A fun interactive webpage built to engage users with playful animations and creative UI for sharing feelings.',
+            tech: ['HTML', 'CSS', 'JavaScript'],
+            link: 'https://foryourcrush.netlify.app/'
+        },
+        {
+            id: 'v3',
+            title: 'Aptitude Preparation Platform',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj3.png',
+            images: ['vibeProj3.png'],
+            desc: 'A full-stack platform for aptitude preparation featuring questions, explanations, image uploads, commenting, weekly exams, and leaderboard tracking for students.',
+            tech: ['React', 'Next.js', 'FastAPI', 'PostgreSQL', 'Tailwind CSS'],
+            link: '#'
+        },
+        {
+            id: 'v4',
+            title: 'MoneyCalc – Expense Split Tool',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj4.png',
+            images: ['vibeProj4.png'],
+            desc: 'A simple yet practical tool to calculate and split expenses among friends, especially useful during group outings.',
+            tech: ['HTML', 'JavaScript', 'jQuery'],
+            link: 'https://moneycalc-a.netlify.app/'
+        },
+        {
+            id: 'v5',
+            title: 'Valentine Interactive Page',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj5.png',
+            images: ['vibeProj5.png'],
+            desc: 'A themed interactive webpage designed for Valentine’s proposals with engaging UI and animations.',
+            tech: ['HTML', 'CSS', 'JavaScript'],
+            link: 'https://willuubemyvalentine.netlify.app/'
+        },
+        {
+            id: 'v6',
+            title: 'Sifix Company Website',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj6.png',
+            images: ['vibeProj6.png'],
+            desc: 'A modern company website showcasing services, branding, and responsive design.',
+            tech: ['HTML', 'CSS', 'JavaScript'],
+            link: 'https://sifix.netlify.app/'
+        },
+        {
+            id: 'v7',
+            title: 'LAN Chat Application',
+            cat: 'Vibe Coding',
+            thumb: 'vibeProj7.jpeg',
+            images: ['vibeProj7.jpeg'],
+            desc: 'A local network chat application built to simplify communication and file sharing in lab environments. Supports sharing code, PDFs, images, and includes mini-games with a leaderboard system.',
+            tech: ['Node.js', 'MySQL'],
+            link: '#'
+        }
+        ]
+    };
+
+    /* ── BUILD CARDS ── */
+   function buildCards(list, trackId) {
+    const track = document.getElementById(trackId);
+
+    // 👉 If company → no repeat, no animation
+    if (trackId === 'track-company') {
+        list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'proj-card';
+        card.innerHTML = `
+            <img src="${p.thumb}" alt="${p.title}">
+            <div class="proj-overlay">
+            <p class="proj-title">${p.title}</p>
+            <p class="proj-tag">${p.tech.slice(0,3).join(' · ')}</p>
+            </div>
+        `;
+        card.addEventListener('click', () => openModal(p));
+        track.appendChild(card);
+        });
+
+        return; // 🚫 stop animation logic
+    }
+
+    // 👉 others keep infinite scroll
+    const repeated = [...list, ...list, ...list, ...list];
+
+    repeated.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'proj-card';
+        card.innerHTML = `
+        <img src="${p.thumb}" alt="${p.title}">
+        <div class="proj-overlay">
+            <p class="proj-title">${p.title}</p>
+            <p class="proj-tag">${p.tech.slice(0,3).join(' · ')}</p>
+        </div>
+        <span class="proj-view">View details</span>
+        `;
+        card.addEventListener('click', () => openModal(p));
+        track.appendChild(card);
+    });
+
+    track.style.animationDuration = (list.length * 18) + 's';
+    }
+
+    buildCards(projects.company, 'track-company');
+    buildCards(projects.college, 'track-college');
+    buildCards(projects.vibe,    'track-vibe');
+
+    /* ── MODAL ── */
+    function openModal(p) {
+      document.getElementById('modal-hero-img').src = p.thumb;
+      document.getElementById('modal-cat').textContent = p.cat;
+      document.getElementById('modal-title').textContent = p.title;
+      document.getElementById('modal-desc').textContent = p.desc;
+      document.getElementById('modal-link').href = p.link;
+
+      const techEl = document.getElementById('modal-tech');
+      techEl.innerHTML = p.tech.map(t => `<span>${t}</span>`).join('');
+
+      const imgEl = document.getElementById('modal-images');
+      imgEl.innerHTML = p.images.map(s => `<img src="${s}" alt="">`).join('');
+
+      document.getElementById('modal-backdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-backdrop').addEventListener('click', e => {
+      if (e.target === document.getElementById('modal-backdrop')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── TYPEWRITER ── */
+    const roles = ['Full Stack Developer','PHP Developer','Java Developer','React Developer','Spring Boot Developer','UI Designer'];
+    let ri = 0, ci = 0, del = false;
+    const roleEl = document.getElementById('role-text');
+    function type() {
+      const cur = roles[ri];
+      roleEl.textContent = del ? cur.substring(0, ci - 1) : cur.substring(0, ci + 1);
+      del ? ci-- : ci++;
+      let speed = del ? 55 : 95;
+      if (!del && ci === cur.length) { speed = 1800; del = true; }
+      else if (del && ci === 0) { del = false; ri = (ri + 1) % roles.length; speed = 300; }
+      setTimeout(type, speed);
+    }
+    type();
+
+    /* ── SCROLL REVEAL — re-triggers every time element enters viewport ── */
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        } else {
+          // remove so it re-animates next time it scrolls into view
+          e.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── ACTIVE NAV ON SCROLL ── */
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.getAttribute('id'); });
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.toggle('active', n.getAttribute('href') === '#' + cur);
+      });
+    });
+  </script>
+</body>
+</html>
