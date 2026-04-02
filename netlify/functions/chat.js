@@ -1,49 +1,62 @@
 export async function handler(event, context) {
-  const { message } = JSON.parse(event.body);
+  try {
+    const { message } = JSON.parse(event.body);
 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: "mistralai/mistral-7b-instruct",
-      messages: [
-        {
-          role: "system",
-          content: `
-You are Ajay's personal portfolio assistant.
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "mistralai/mistral-7b-instruct",
+        messages: [
+          {
+            role: "system",
+            content: `
+You are Ajay's portfolio assistant.
+Answer only about Ajay.
+Handle spelling mistakes and broken English.
+            `
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ]
+      })
+    });
 
-Answer ONLY about Ajay.
+    const data = await response.json();
 
-Details:
-- Full Stack Developer
-- 1 year experience at Ignosi
-- Skills: PHP, React, Spring Boot, MySQL
-- Projects: Banking & E-commerce systems
+    // 🔍 DEBUG LOG (check Netlify logs)
+    console.log("AI RESPONSE:", JSON.stringify(data));
 
-Rules:
-- Be friendly
-- Short answers
-- If unrelated → say "I can only answer about Ajay"
-          `
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ]
-    })
-  });
+    // ❗ HANDLE ERROR RESPONSE
+    if (!data.choices || !data.choices[0]) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          reply: "AI is not responding properly. Check API key or quota."
+        })
+      };
+    }
 
-  const data = await response.json();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        reply: data.choices[0].message.content
+      })
+    };
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      reply: data.choices[0].message.content
-    })
-  };
+  } catch (err) {
+    console.error("ERROR:", err);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        reply: "Server error. Please try again."
+      })
+    };
+  }
 }
-
