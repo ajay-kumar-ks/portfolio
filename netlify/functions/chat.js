@@ -1,13 +1,22 @@
-export async function handler(event, context) {
+export async function handler(event) {
   try {
-    
-    const { message } = JSON.parse(event.body);
+    const body = JSON.parse(event.body || "{}");
+    const message = body.message || "";
+
+    if (!message) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ reply: "No message provided" })
+      };
+    }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://ajaykumarks-portfolio.netlify.app",
+        "X-Title": "Ajay Portfolio"
       },
       body: JSON.stringify({
         model: "mistralai/mistral-7b-instruct",
@@ -16,8 +25,17 @@ export async function handler(event, context) {
             role: "system",
             content: `
 You are Ajay's portfolio assistant.
-Answer only about Ajay.
-Handle spelling mistakes and broken English.
+
+Answer ONLY about Ajay.
+
+Details:
+- Full Stack Developer
+- 1 year experience at Ignosi
+- Skills: PHP, React, Spring Boot, MySQL
+- Projects: Banking & E-commerce
+
+Understand spelling mistakes and broken English.
+Keep answers short and friendly.
             `
           },
           {
@@ -30,17 +48,24 @@ Handle spelling mistakes and broken English.
 
     const data = await response.json();
 
-console.log("FULL RESPONSE:", JSON.stringify(data));
+    console.log("OPENROUTER RESPONSE:", JSON.stringify(data));
 
-    // 🔍 DEBUG LOG (check Netlify logs)
-    console.log("AI RESPONSE:", JSON.stringify(data));
+    // ❗ HANDLE API ERROR
+    if (!response.ok) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          reply: data?.error?.message || "OpenRouter API error"
+        })
+      };
+    }
 
-    // ❗ HANDLE ERROR RESPONSE
+    // ❗ HANDLE MISSING DATA
     if (!data.choices || !data.choices[0]) {
       return {
         statusCode: 500,
         body: JSON.stringify({
-          reply: "AI is not responding properly. Check API key or quota."
+          reply: "Invalid AI response format"
         })
       };
     }
@@ -53,14 +78,13 @@ console.log("FULL RESPONSE:", JSON.stringify(data));
     };
 
   } catch (err) {
-    console.error("ERROR:", err);
+    console.error("FUNCTION ERROR:", err);
 
     return {
       statusCode: 500,
       body: JSON.stringify({
-        reply: "Server error. Please try again."
+        reply: "Server crashed"
       })
     };
   }
-  
 }
