@@ -19,7 +19,7 @@ export async function handler(event) {
         "X-Title": "Ajay Portfolio"
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct:free",
+        model: "gryphe/mythomist-7b:free",
         messages: [
           {
             role: "system",
