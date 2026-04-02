@@ -1,5 +1,6 @@
 export async function handler(event, context) {
   try {
+    
     const { message } = JSON.parse(event.body);
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -28,6 +29,8 @@ Handle spelling mistakes and broken English.
     });
 
     const data = await response.json();
+
+console.log("FULL RESPONSE:", JSON.stringify(data));
 
     // 🔍 DEBUG LOG (check Netlify logs)
     console.log("AI RESPONSE:", JSON.stringify(data));
@@ -59,4 +62,5 @@ Handle spelling mistakes and broken English.
       })
     };
   }
+  
 }
