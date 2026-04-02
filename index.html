@@ -765,17 +765,17 @@
   </div>
   <script>
     async function getAIResponse(userMessage) {
-    const res = await fetch("/.netlify/functions/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: userMessage })
-    });
+      const res = await fetch("/.netlify/functions/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: userMessage })
+      });
 
-    const data = await res.json();
-    return data.reply;
-  }
+      const data = await res.json();
+      return data.reply;
+    }
     /* ── CHAT OPEN/CLOSE ── */
   const chatBackdrop = document.getElementById('chat-backdrop');
   const chatBtn = document.querySelector('a[href="#chat"]');
