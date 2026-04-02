@@ -19,7 +19,7 @@ export async function handler(event) {
         "X-Title": "Ajay Portfolio"
       },
       body: JSON.stringify({
-        model: "openchat/openchat-7b:free",
+        model: "mistralai/mistral-7b-instruct:free",
         messages: [
           {
             role: "system",
