@@ -399,12 +399,148 @@
     font-weight: 600;
     }
 
-    /* Mobile */
+    /* ─── MOBILE NAVBAR (Instagram style) ─── */
     @media (max-width: 700px) {
-    .contact-cards {
-        grid-template-columns: 1fr;
+      .contact-cards {
+          grid-template-columns: 1fr;
+      }
+      body {
+        padding-bottom: 70px;
+      }
+      .portfolio-nav {
+        bottom: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        border-radius: 0;
+
+        justify-content: space-around;
+        padding: 10px 0;
+
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav-item {
+        flex: 1;
+        padding: 8px 0;
+      }
+
+      /* Hide text labels */
+      .nav-label {
+        display: none;
+      }
+
+      /* Remove divider lines */
+      .nav-divider {
+        display: none;
+      }
+
+      /* Bigger icons for mobile */
+      .nav-item span.material-icons-round {
+        font-size: 24px;
+      }
     }
-    }
+
+    /* ─── CHAT MODAL ─── */
+.chat-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.chat-backdrop.open {
+  background: rgba(0,0,0,0.5);
+  pointer-events: all;
+}
+
+.chat-modal {
+  width: 100%;
+  max-width: 420px;
+  height: 70vh;
+  background: #fff;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  transform: scale(0.9);
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.chat-backdrop.open .chat-modal {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Header */
+.chat-header {
+  padding: 14px 16px;
+  background: #1a1714;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Messages */
+.chat-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f5f2ef;
+}
+
+/* Message bubbles */
+.chat-msg {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.user-msg {
+  background: #1a1714;
+  color: #fff;
+  margin-left: auto;
+}
+
+.bot-msg {
+  background: #e0ddd9;
+  color: #1a1714;
+}
+
+/* Input */
+.chat-input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.chat-input-area input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.chat-input-area button {
+  background: #1a1714;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -602,7 +738,108 @@
     <a class="nav-item" href="#chat"><span class="material-icons-round">chat_bubble</span><span class="nav-label">Chat</span></a>
   </nav>
 
+  <!-- ── CHAT MODAL ── -->
+  <div class="chat-backdrop" id="chat-backdrop">
+    <div class="chat-modal">
+
+      <!-- Header -->
+      <div class="chat-header">
+        <span>Chat with Ajay 🤖</span>
+        <button id="chat-close">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-body" id="chat-body"></div>
+
+      <!-- Input -->
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Type a message..." />
+        <button id="chat-send">
+          <span class="material-icons-round">send</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
   <script>
+    async function getAIResponse(userMessage) {
+    const res = await fetch("/.netlify/functions/chat", {
+      method: "POST",
+      body: JSON.stringify({ message: userMessage })
+    });
+
+    const data = await res.json();
+    return data.reply;
+  }
+    /* ── CHAT OPEN/CLOSE ── */
+  const chatBackdrop = document.getElementById('chat-backdrop');
+  const chatBtn = document.querySelector('a[href="#chat"]');
+  const chatClose = document.getElementById('chat-close');
+
+  chatBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    chatBackdrop.classList.add('open');
+  });
+
+  chatClose.addEventListener('click', () => {
+    chatBackdrop.classList.remove('open');
+  });
+
+  /* ── CHAT FUNCTION ── */
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const chatBody = document.getElementById('chat-body');
+
+  function addMessage(text, type) {
+    const div = document.createElement('div');
+    div.className = `chat-msg ${type}`;
+    div.textContent = text;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  /* Simple bot logic */
+  function botReply(msg) {
+    msg = msg.toLowerCase();
+
+    if (msg.includes('hey') || msg.includes('hi')) {
+      return 'Hello 👋';
+    }
+    if (msg.includes('who are you')) {
+      return 'I am Ajay’s assistant 🤖';
+    }
+    if (msg.includes('project')) {
+      return 'You can check projects section above 🚀';
+    }
+    if (msg.includes('contact')) {
+      return 'You can contact Ajay via email or phone 📩';
+    }
+
+    return 'Sorry, I didn’t understand 😅';
+  }
+
+  async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMessage(msg, 'user-msg');
+    input.value = '';
+
+    addMessage("Typing...", "bot-msg");
+
+    const reply = await getAIResponse(msg);
+
+    chatBody.lastChild.remove(); // remove typing
+
+    addMessage(reply, "bot-msg");
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
     /* ── PROJECT DATA ── */
     const projects = {
       company: [
